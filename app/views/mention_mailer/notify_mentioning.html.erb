@@ -1,5 +1,5 @@
 
-<p><%= l(:html_you_were_mentioned, :login => @journal.user.login, :created_on => (format_time @journal.created_on, true)) %></p>
+<p><%= l(:html_you_were_mentioned, :login => @journal.user.login, :created_on => (format_time @journal.created_on, true)).html_safe %></p>
 
 <hr />
 
