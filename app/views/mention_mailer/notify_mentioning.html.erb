@@ -1,9 +1,8 @@
-<h4><%= link_to "[#{@issue.project.name} - #{@issue.tracker.name}##{@issue.id}] #{@issue.subject}", issue_url(@issue) %></h4>
 
-<br /><br />
+<p><%= l(:html_you_were_mentioned, :login => @journal.user.login, :created_on => (format_time @journal.created_on, true)) %></p>
 
-<i>You were mentioned by <strong><%= @journal.user.login %></strong> on <strong><%=  @journal.created_on.localtime.to_s %></strong></i>
+<hr />
 
-<br /><br />
+<h4><%= link_to "#{@issue.tracker.name} ##{@issue.id}: #{@issue.subject}", issue_url(@issue) %></h4>
 
 <%= textilizable(@journal, :notes, {:headings => false, :only_path => false}) -%>
