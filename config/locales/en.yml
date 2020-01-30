@@ -1,3 +1,4 @@
 en:
   html_you_were_mentioned: "You were mentioned by <strong>%{login}</strong> on <strong>%{created_on}.</strong>"
   text_you_were_mentioned: "You were mentioned by %{login} on %{created_on}."
+  subject_you_were_mentioned: "You were mentioned in:"
