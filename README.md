@@ -1,16 +1,12 @@
 Redmine Mentions
 ================
 
+Allows users to mention team members in their notes/comments.
+
 ![Run RuboCop](https://github.com/AlphaNodes/redmine_mentions/workflows/Run%20RuboCop/badge.svg) ![Run Tests](https://github.com/AlphaNodes/redmine_mentions/workflows/Run%20Tests/badge.svg)
 
-Issues and PRs are welcome.
+Redmine site: https://www.redmine.org/plugins/redmine-mentions
 
-Redmine site: http://www.redmine.org/plugins/redmine-mentions
-
-
-=============
-
-Allows users to mention team members in their notes/comments.
 
 Functionality
 ==============
