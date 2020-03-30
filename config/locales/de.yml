@@ -1,4 +1,4 @@
-en:
+de:
   html_you_were_mentioned: "Sie wurden von <strong>%{login}</strong> um <strong>%{created_on}</strong> erwähnt."
   text_you_were_mentioned: "Sie wurden von %{login} um %{created_on} erwähnt."
   subject_you_were_mentioned: "Sie wurden erwähnt in:"

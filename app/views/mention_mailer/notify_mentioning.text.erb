@@ -2,6 +2,6 @@
 
 <%= issue_url(@issue) %>
 
-<%= l(:text_you_were_mentioned, :login => @journal.user.login, :created_on => (format_time @journal.created_on, true)) %>
+<%= l(:text_you_were_mentioned, login: @journal.user.login, created_on: (format_time @journal.created_on, true)) %>
 
 <%= @journal.notes %>
