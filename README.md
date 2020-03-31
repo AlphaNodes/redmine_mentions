@@ -15,11 +15,13 @@ the mentioned user receives an email with the body of the comment and informatio
 
 '@' sign is used as the trigger for the mentioning.
 
+This functionality should be in Redmine core with https://www.redmine.org/issues/13919
+
 
 Requirements
 ============
 
-- Redmine 4.1 (because same mechanism as for issues is used, which comes with Redmine 4.1)
+- Redmine 4.1 (because same mechanism as for issues is used, which comes with Redmine 4.1).
 
 Installation
 ============
