@@ -8,10 +8,13 @@ class Journal
   def send_mail
     return unless journalized.is_a?(Issue) && notes.present?
 
-    users = journalized.project.users.to_a.delete_if { |u| (u.type != 'User' || u.mail.empty?) }
-    users_regex = users.collect { |u| "@#{u.login}" }.join('|')
-    regex_for_email = '\B(' + users_regex + ')\b'
-    regex = Regexp.new(regex_for_email)
+    logins = journalized.project
+                        .users
+                        .where(type: 'User')
+                        .pluck(:login)
+
+    users_regex = logins.map { |u| "@#{u}" }.join('|')
+    regex = Regexp.new('\B(' + users_regex + ')\b')
     mentioned_users = notes.scan(regex)
     mentioned_users.each do |mentioned_user|
       username = mentioned_user.first[1..-1]

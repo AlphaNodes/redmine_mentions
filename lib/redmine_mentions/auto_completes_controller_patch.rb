@@ -6,8 +6,8 @@ class AutoCompletesController
     q = params[:q].to_s.strip
     exclude_id = params[:user_id].to_i
 
-    scope = @project.nil? ? User.active.where(type: 'User') : @project.users
-    scope = scope.visible
+    scope = @project.nil? ? User.active : @project.users
+    scope = scope.where(type: 'User').visible
     scope = scope.where.not(id: exclude_id) if exclude_id.positive?
 
     if q.present?
