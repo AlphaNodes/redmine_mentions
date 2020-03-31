@@ -9,7 +9,7 @@ class Journal
     return unless journalized.is_a?(Issue) && notes.present?
 
     users = journalized.project.users.to_a.delete_if { |u| (u.type != 'User' || u.mail.empty?) }
-    users_regex = users.collect { |u| "#{Setting.plugin_redmine_mentions['trigger']}#{u.login}" }.join('|')
+    users_regex = users.collect { |u| "@#{u.login}" }.join('|')
     regex_for_email = '\B(' + users_regex + ')\b'
     regex = Regexp.new(regex_for_email)
     mentioned_users = notes.scan(regex)
