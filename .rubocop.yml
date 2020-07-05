@@ -6,8 +6,9 @@ Rails:
   Enabled: true
 
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
   TargetRailsVersion: 5.2
+  NewCops: enable
 
 Metrics/AbcSize:
   Enabled: false
@@ -39,9 +40,6 @@ Rails/ApplicationJob:
 Rails/ApplicationRecord:
   Enabled: false
 
-Rails/ApplicationMailer:
-  Enabled: false
-
 Rails/CreateTableWithTimestamps:
   Enabled: false
 
@@ -49,6 +47,9 @@ Rails/HelperInstanceVariable:
   Enabled: false
 
 Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/ApplicationMailer:
   Enabled: false
 
 Performance/ChainArrayAllocation:
@@ -66,9 +67,6 @@ Style/Documentation:
 # required for travis/ci (symbolic links problem)
 Style/ExpandPathArguments:
   Enabled: false
-
-Style/HashEachMethods:
-  Enabled: true
 
 Style/HashTransformKeys:
   Enabled: false

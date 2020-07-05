@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Redmine plugin test
-        uses: two-pack/redmine-plugin-test-action@add_db_option
+        uses: two-pack/redmine-plugin-test-action@v2
         with:
           plugin_name: redmine_mentions
           redmine_version: ${{ matrix.redmine }}
