@@ -3,7 +3,7 @@ Redmine::Plugin.register :redmine_mentions do
   author 'Arkhitech, Taine Woo'
   description 'This is a plugin for Redmine which gives suggestions on using username in comments'
   version '1.0.0'
-  url 'https://github.com/tainewoo/redmine_mentions'
+  url 'https://github.com/AlphaNodes/redmine_mentions'
   author_url 'https://github.com/tainewoo'
 
   requires_redmine version_or_higher: '4.1'
