@@ -2,30 +2,113 @@ name: Run Tests
 on:
   push:
   pull_request:
-  schedule:
-    - cron: '0 5 * * *'
 
 jobs:
   test:
+    name: ${{ matrix.redmine }} ${{ matrix.db }} ruby-${{ matrix.ruby }}
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        redmine:
-          - v4.1
-          - trunk
-        ruby:
-          - v2.4
-          - v2.6
+        ruby: ['2.6', '2.4']
+        redmine: ['4.1-stable', 'master']
+        db: ['postgres', 'mysql']
+      fail-fast: false
 
-        database:
-          - sqlite3
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: redmine
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_USER: root
+          MYSQL_PASSWORD: ''
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
-      - name: Redmine plugin test
-        uses: two-pack/redmine-plugin-test-action@v2
+      - name: Verify MySQL connection from host
+        run: |
+          mysql --host 127.0.0.1 --port 3306 -uroot -e "SHOW DATABASES"
+        if: matrix.db == 'mysql'
+
+      - name: Checkout Redmine
+        uses: actions/checkout@v2
         with:
-          plugin_name: redmine_mentions
-          redmine_version: ${{ matrix.redmine }}
-          ruby_version: ${{ matrix.ruby }}
-          database: ${{ matrix.database }}
+          repository: redmine/redmine
+          ref: ${{ matrix.redmine }}
+          path: redmine
+
+      - name: Checkout redmine_mentions
+        uses: actions/checkout@v2
+        with:
+          path: redmine/plugins/redmine_mentions
+
+      - name: Update package archives
+        run: sudo apt-get update --yes --quiet
+
+      - name: Install package dependencies
+        run: >
+          sudo apt-get install --yes --quiet
+          build-essential
+          cmake
+          libicu-dev
+          libpq-dev
+          libmysqlclient-dev
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      - name: Prepare Redmine source
+        working-directory: redmine
+        run: |
+          cp plugins/redmine_mentions/test/support/database-${{ matrix.db }}.yml config/database.yml
+          cp plugins/redmine_mentions/test/support/configuration.yml config/configuration.yml
+
+      - name: Install Ruby dependencies
+        working-directory: redmine
+        run: |
+          bundle install --jobs=4 --retry=3 --without development
+
+      - name: Generate session store secret
+        env:
+          RAILS_ENV: test
+        working-directory: redmine
+        run: |
+          bundle exec rake generate_secret_token
+
+      - name: Run Redmine DB and migration tasks
+        env:
+          RAILS_ENV: test
+        working-directory: redmine
+        run: |
+          bundle exec rake db:create db:migrate redmine:plugins:migrate
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          REDMINE_VERSION: ${{ matrix.redmine }}
+        working-directory: redmine
+        run: bundle exec rake redmine:plugins:test NAME=redmine_mentions RUBYOPT="-W0"
