@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RedmineMentions
   class Hooks < Redmine::Hook::ViewListener
     render_on :view_issues_edit_notes_bottom,

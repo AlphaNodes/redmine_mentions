@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path('../../test_helper', __FILE__)
 
 class AutoCompletesControllerTest < Redmine::ControllerTest
@@ -49,7 +51,7 @@ class AutoCompletesControllerTest < Redmine::ControllerTest
                   q: '8' }
 
     assert_response :success
-    json = ActiveSupport::JSON.decode(response.body)
+    json = ActiveSupport::JSON.decode response.body
     assert_kind_of Array, json
     user = json.first
     assert_kind_of Hash, user

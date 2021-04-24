@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MentionMailer < ActionMailer::Base
   layout 'mailer'
   default from: Setting.mail_from
@@ -13,6 +15,6 @@ class MentionMailer < ActionMailer::Base
     @issue = issue
     @journal = journal
     mail to: user.mail,
-         subject: "[#{@issue.project.name} - #{@issue.tracker.name} ##{@issue.id}] #{l(:subject_you_were_mentioned)} #{@issue.subject}"
+         subject: "[#{@issue.project.name} - #{@issue.tracker.name} ##{@issue.id}] #{l :subject_you_were_mentioned} #{@issue.subject}"
   end
 end

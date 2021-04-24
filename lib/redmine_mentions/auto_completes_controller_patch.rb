@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_dependency 'auto_completes_controller'
 
 class AutoCompletesController
@@ -8,7 +10,7 @@ class AutoCompletesController
 
     scope = @project.nil? ? User.active : @project.users
     scope = scope.where(type: 'User').visible
-    scope = scope.where.not(id: exclude_id) if exclude_id.positive?
+    scope = scope.where.not id: exclude_id if exclude_id.positive?
 
     if q.present?
       users << scope.find_by(id: Regexp.last_match(1)) if q =~ /(\d+)\z/

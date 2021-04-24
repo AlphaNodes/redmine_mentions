@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_dependency 'journal'
 
 class Journal
@@ -14,10 +16,10 @@ class Journal
                         .pluck(:login)
 
     users_regex = logins.map { |u| "@#{u}" }.join '|'
-    regex = Regexp.new "\B(#{users_regex})\b"
+    regex = Regexp.new(/\B(#{users_regex})\b/)
     mentioned_users = notes.scan regex
     mentioned_users.each do |mentioned_user|
-      username = mentioned_user.first[1..-1]
+      username = mentioned_user.first[1..]
       user = User.find_by login: username
       next unless user
 
